@@ -14,7 +14,7 @@ import TelemetryAppBar from './sections/TelemetryAppBar.svelte';
 import TelemetryMainFilters from './sections/TelemetryMainFilters.svelte';
 import ProbeDetails from './sections/ProbeDetails.svelte';
 
-import { currentQuery } from './state/store';
+import { store, currentQuery } from './state/store';
 
 let visible = false;
 
@@ -25,30 +25,28 @@ function updateQueryString() {
   }
 }
 
-$: if (visible) {
+$: if ($store.token && visible) {
   updateQueryString($currentQuery);
 }
 
 onMount(() => { visible = true; });
-
 </script>
 
-<style>
+{#if $store.token}
+    <App>
+        <!-- <TelemetryAppBar /> -->
+        <!-- <TelemetryControls /> -->
 
-</style>
-<App>
-    <!-- <TelemetryAppBar /> -->
-    <!-- <TelemetryControls /> -->
-
-    <Main>
-        <MainActionBar>
-                <TelemetryAppBar />
-                <Search />
-                <TelemetryMainFilters />
-        </MainActionBar>
-        <Content>
-          <GraphicBody />
-        </Content>
-    </Main>
-    <Footer />
-</App>
+        <Main>
+            <MainActionBar>
+            <TelemetryAppBar />
+            <Search />
+            <TelemetryMainFilters />
+            </MainActionBar>
+            <Content>
+                <GraphicBody />
+            </Content>
+        </Main>
+        <Footer />
+    </App>
+{/if}
